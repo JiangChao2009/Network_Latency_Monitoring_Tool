@@ -15,9 +15,9 @@ if os.path.exists('Readings.xlsx') is False:
 
     ws['A1'] = "Number of Readings:"
     ws['B1'] = 0
-    ws['A2'] = "Time"
-    ws['B2'] = "Latency (ms)"
-    ws['C2'] = "Time in Seconds from Start of Day"
+    ws['A2'] = "Latency (ms)"
+    ws['B2'] = "Time in Seconds from Start of Day"
+    ws['C2'] = "Time"
     ws['D2'] = "Date"
 
     wb.save('Readings.xlsx')
@@ -43,9 +43,9 @@ while 1 == 1:
 
     row_num = ws['B1'].value + 3
 
-    ws.cell(row=row_num, column=1).value = str(present_time)
-    ws.cell(row=row_num, column=2).value = int(ping2)
-    ws.cell(row=row_num, column=3).value = int(present_time_total_seconds)
+    ws.cell(row=row_num, column=1).value = int(ping2)
+    ws.cell(row=row_num, column=2).value = int(present_time_total_seconds)
+    ws.cell(row=row_num, column=3).value = str(present_time)
     ws.cell(row=row_num, column=4).value = str(present_time.date())
 
     ws['B1'].value += 1
