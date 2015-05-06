@@ -11,7 +11,8 @@ import datetime
 
 # SETTINGS~~~~~~~~~~~~~~~~~
 server = "www.google.com"  # server to ping
-time_between_pings = 60  # time between pings (s)
+time_between_pings = 10  # time between pings (s)
+time_between_saves = 30  # time between saves (s)
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 
 if os.path.exists('Readings.xlsx') is False:
@@ -31,16 +32,18 @@ else:
     wb = load_workbook('Readings.xlsx')
     ws = wb.active
 
+time_since_last_save = 0
+save_time = 0
 
 while 1 == 1:
-    #pings a server and returns the ping time (in ms)
+    # pings a server and returns the ping time (in ms)
     ping = subprocess.Popen(["ping.exe", server], stdout=subprocess.PIPE)
     ping2 = ping.communicate()[0]
     ping2 = str(ping2)
     ping2 = ping2.split('time=', 1)[1]
     ping2 = ping2.split('ms', 1)[0]
 
-    #takes the present time, and then returns the time from the start of the day in seconds
+    # takes the present time, and then returns the time from the start of the day in seconds
     present_time = datetime.datetime.now()
     present_time_total_seconds = (present_time.hour*3600) + (present_time.minute*60) + present_time.second
 
@@ -52,6 +55,12 @@ while 1 == 1:
     ws.cell(row=row_num, column=4).value = str(present_time.date())
 
     ws['B1'].value += 1
-    wb.save("Readings.xlsx")
+    time_since_last_save = present_time_total_seconds - save_time
+
+    if time_since_last_save > time_between_saves:
+        wb.save("Readings.xlsx")
+        save_time = present_time_total_seconds
+        print("SAVED TO EXCEL")
+
     print("Time:%s Latency:%dms" % (str(present_time), int(ping2)))
     time.sleep(time_between_pings)
