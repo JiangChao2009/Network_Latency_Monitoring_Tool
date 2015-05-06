@@ -17,7 +17,7 @@ if os.path.exists('Readings.xlsx') is False:
     ws['B1'] = 0
     ws['A2'] = "Latency (ms)"
     ws['B2'] = "Time in Seconds from Start of Day"
-    ws['C2'] = "Time"
+    ws['C2'] = "Date/Time"
     ws['D2'] = "Date"
 
     wb.save('Readings.xlsx')
