@@ -9,6 +9,11 @@ import subprocess
 import time
 import datetime
 
+# SETTINGS~~~~~~~~~~~~~~~~~
+server = "www.google.com"  # server to ping
+time_between_pings = 60  # time between pings (s)
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+
 if os.path.exists('Readings.xlsx') is False:
     wb = Workbook()
     ws = wb.active
@@ -26,12 +31,10 @@ else:
     wb = load_workbook('Readings.xlsx')
     ws = wb.active
 
-#SETTINGS
-website = "www.google.com"
 
 while 1 == 1:
     #pings a server and returns the ping time (in ms)
-    ping = subprocess.Popen(["ping.exe", website], stdout=subprocess.PIPE)
+    ping = subprocess.Popen(["ping.exe", server], stdout=subprocess.PIPE)
     ping2 = ping.communicate()[0]
     ping2 = str(ping2)
     ping2 = ping2.split('time=', 1)[1]
@@ -51,4 +54,4 @@ while 1 == 1:
     ws['B1'].value += 1
     wb.save("Readings.xlsx")
     print("Time:%s Latency:%dms" % (str(present_time), int(ping2)))
-    time.sleep(0.2)
+    time.sleep(time_between_pings)
